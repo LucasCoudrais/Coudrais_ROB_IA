@@ -310,7 +310,8 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 Voici un exemple de sa shape `(10000, 28, 28)`
 
 ## 3.2 Deposer ces images sur le e-campus  sous un format bmp 28X28 et déposer aussi l’orginal trouvé sur internet . Est ce fait ?
-Oui, voici le code permettant de transformer mes vraies images, les traiter, les mettre dans un table au même formet et recuperer les images traiter au format bmp dans un dossier de mon drive 
+Oui, voici le code permettant de transformer mes vraies images, les traiter, les mettre dans un table au même formet et recuperer les images traiter au format bmp dans un dossier de mon drive  
+Sans inverser la oculeur cette fois
 ```python
 from PIL import Image
 import numpy as np
@@ -339,7 +340,7 @@ for image_file in image_files:
         img = Image.open(os.path.join(image_directory, image_file))
         img = img.convert("L")  # Convertir en nuances de gris
         img = img.resize((28, 28))  # Redimensionner en 28x28 pixels
-        img_data = 255 - np.array(img)  # Inverser les valeurs en soustrayant chaque pixel de 255
+        img_data = np.array(img)  # Inverser les valeurs en soustrayant chaque pixel de 255
         img_data = img_data / 255.0  # Normaliser les valeurs entre 0 et 1
         images_data.append(img_data)
 
