@@ -99,8 +99,6 @@ activation=leaky
 # 2
 https://www.tensorflow.org/tutorials/keras/classification </br>
 Test du code fournit sous google Collab
-![alt text](.img/screen1.png)
-![alt text](.img/screen2.png)
 ## 2.1 Donner la définition d’un neurone au sens informatique
 Un neuronne est une unité dans un réseau de neuronne. Chaque neuronne est conçu pour simuler le comportement des neuronnes biologiques du cerveau humain. Il s'appuie en général sur des données d'entrée, leur appliquent un traitement pour générer une sortie. Chaque neuronne peut etre connecter a une autre neuronne ou une source extérieur pour former un réseau de neuronne.
 - Entrée
@@ -112,7 +110,7 @@ Un neuronne est une unité dans un réseau de neuronne. Chaque neuronne est con�
 - Sortie
 - - Résultat de la fonction d'activation a la somme pondéré. 
 - - Transmise a d'autre neuronne ou couche suivante du réseau ou source extérieur.
-![alt text](.img/screen3.png)
+![alt text](./img/screen3.png)
 
 ## 2.2 En quoi consiste la notion de couche dans les réseaux de neurones 
 - Un réseau de neuronne est consititué de plusieur couche.
@@ -138,7 +136,7 @@ Il existe 3 type de couche
 - - Les neuronne recoivent d'un neuronne chaché et envoient la source externe 
 - - Nombre de neuronne depend du cadre d'utilsation du réseau
 
-![alt text](.img/screen4.png)
+![alt text](./img/screen4.png)
 
 ## 2.3 En quoi consiste une couche dans un réseau neurone
 Réponse au dessus 
@@ -284,8 +282,8 @@ Conclusion : il semble mieux de rajouter juste un peu de couche mais pas trop no
 C'est la focntion relu qui est définie dans la couche du milieu au moment de la construction des couches du modèle.
 Liste des potentielles activations :  
 ![alt text](./img/screen5.png)  
-Tests : 
 
+Tests : 
 |fonction d'activation|loss|accuracy|
 |---------------------|----|--------|
 |relu|0.3363|0.8824999928474426|
@@ -311,7 +309,59 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 ```
 Voici un exemple de sa shape `(10000, 28, 28)`
 
-## Code pour transformer mes vraies images 
+## 3.2 Deposer ces images sur le e-campus  sous un format bmp 28X28 et déposer aussi l’orginal trouvé sur internet . Est ce fait ?
+Oui, voici le code permettant de transformer mes vraies images, les traiter, les mettre dans un table au même formet et recuperer les images traiter au format bmp dans un dossier de mon drive 
+```python
+from PIL import Image
+import numpy as np
+import os
+from google.colab import drive
+
+# Montez votre Google Drive pour enregistrer les images traitées
+drive.mount('/content/drive')
+
+# Spécifiez le répertoire où se trouvent vos images
+image_directory = "./my_images"
+
+# Répertoire de destination pour les images traitées
+output_directory = "/content/drive/My Drive/Processed_Images/"
+os.makedirs(output_directory, exist_ok=True)
+
+# Liste de noms de fichiers de vos images
+image_files = os.listdir(image_directory)
+
+# Créez une liste pour stocker les tableaux de pixels de chaque image
+images_data = []
+
+# Parcourez chaque image
+for image_file in image_files:
+    if image_file.endswith(".jpg"):  # Assurez-vous que seuls les fichiers d'image sont traités
+        img = Image.open(os.path.join(image_directory, image_file))
+        img = img.convert("L")  # Convertir en nuances de gris
+        img = img.resize((28, 28))  # Redimensionner en 28x28 pixels
+        img_data = 255 - np.array(img)  # Inverser les valeurs en soustrayant chaque pixel de 255
+        img_data = img_data / 255.0  # Normaliser les valeurs entre 0 et 1
+        images_data.append(img_data)
+
+        # Enregistrez l'image traitée en format BMP dans le répertoire de destination
+        img_processed = Image.fromarray((img_data * 255).astype(np.uint8))
+        img_processed.save(os.path.join(output_directory, image_file.replace(".jpg", ".bmp")))
+
+# Convertir la liste d'images en un tableau 3D
+images_data = np.array(images_data)
+
+# Chaque image est maintenant accessible à partir de images_data[index]
+# Par exemple, la première image serait images_data[0]
+
+print("Images converties en nuances de gris, inversées, redimensionnées et stockées dans un tableau.")
+print("Shape du tableau 3D : ", images_data.shape)
+```
+Toutes les images traités au format bmp se trouvent dans le dossier [my_images_processed](./my_images_processed/)
+
+## 3.3 Tester vos images, on affichera l’image et le résultat sous google collab
+
+### Code pour transformer mes vraies images 
+Attention a bien inverser la couleur
 
 ```python
 from PIL import Image
@@ -330,10 +380,12 @@ images_data = []
 # Parcourez chaque image
 for image_file in image_files:
     if image_file.endswith(".jpg"):  # Assurez-vous que seuls les fichiers d'image sont traités
+        print(image_file)
         img = Image.open(os.path.join(image_directory, image_file))
         img = img.convert("L")  # Convertir en nuances de gris
         img = img.resize((28, 28))  # Redimensionner en 28x28 pixels
-        img_data = np.array(img) / 255.0   # Convertir l'image en un tableau NumPy
+        img_data = 255 - np.array(img)  # Inverser les valeurs en soustrayant chaque pixel de 255
+        img_data = img_data / 255.0  # Normaliser les valeurs entre 0 et 1
         images_data.append(img_data)
 
 # Convertir la liste d'images en un tableau 3D
@@ -344,13 +396,16 @@ images_data = np.array(images_data)
 
 print("Images converties en nuances de gris, redimensionnées et stockées dans un tableau.")
 print("Shape du tableau 3D : ", images_data.shape)
-print(images_data)
+# print(images_data)
 ```
 
-## Construction prediction avec mes images
+### On met nos test_lables adéquat
+`labels_data = [0, 7, 1, 9, 4, 0, 3, 9, 5, 1 ]`
+
+### Construction prediction avec mes images
 `predictions = probability_model.predict(images_data)` 
 
-## Affichage de nos resultats
+### Affichage de nos resultats
 ```python
 # Plot the first X test images, their predicted labels, and the true labels.
 # Color correct predictions in blue and incorrect predictions in red.
