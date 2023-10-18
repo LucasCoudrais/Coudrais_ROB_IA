@@ -423,6 +423,34 @@ plt.show()
 ```
 ![alt text](./img/screen6.png)
 
+# 4
+## 4.1 Avez-vous des idées pour améliorer la structure du réseau ?
+Se reporter aux résultat présentés dans la quesion 2 notamment la 2.8 et la 2.9.  
+En soit je n'ai pas vraiment d'idée précise et dont je suis sur car aucun n'a donner de resultat avec de grosses marges d'améliorations 
+On pourrait surtout (a mon sens) peut etre changer les hyper paramètre rensiegné lors de la compilation. J'en ai vu certain, qui pourrait etre plus cohérent entre eux. Notamment pour la fonction de perte et la métrique par exemple. Pour les optimizer c'est une peu plus flou, ils ontr l'air d'utiliser des algo précis. Certaines métrique et fonction de perte peuvent utiliser la meme technique parfois. Par exemple il existe une métrique `BinaryCrossentropy` et une fonction de perte `BinaryCrossentropy` 
+
+## 4.2 Lesquels ? 
+En soit il faudrait tester pleins d'autres combinaison de ces paramètres jusqu'a en trouver un avec une différence notoire  
+Mais je pense prendre la combinaison des paramètre de fonction d'activation, nombre de noeud par couche et nombre de couche qui a donner les meilleur resultat dans mes resultat de la question 2.  
+Donc, on va simplement doubler le nombre de couche, garder le meme nombre de noeud par couche et choisir la fonction d'activation `mish`.  
+Ce qui va nous donner la configuration suivante : 
+```python
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(128, activation='mish'),
+        tf.keras.layers.Dense(128, activation='mish'),
+        tf.keras.layers.Dense(10)
+    ])
+```
+
+## 4.3  Tester pour voir si c’est mieux et conclure ?
+On obtient les résultat suivant avec les données de test initiales  
+`313/313 - 1s - loss: 44.2892 - accuracy: 0.8734 - 901ms/epoch - 3ms/step`  
+On obtient finalement le resultat suivant pour nos 10 images 
+![alt text](./img/screen6.png)  
+On voit que rien ne change. Les resultat d'accuracy et loss n'ont pas vraiment changé non plus donc c'est cohérent, il faudrait surement tester des choses plus impactanten, comme peut etre les hyper paramètre ou d'autre test dans le modèle de couches.
+
+
 # Sources
 - ChatGPT  
 - https://pjreddie.com/darknet/yolo/  
