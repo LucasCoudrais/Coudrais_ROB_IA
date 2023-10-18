@@ -99,8 +99,8 @@ activation=leaky
 # 2
 https://www.tensorflow.org/tutorials/keras/classification </br>
 Test du code fournit sous google Collab
-![alt text](./screen1.png)
-![alt text](./screen2.png)
+![alt text](.img/screen1.png)
+![alt text](.img/screen2.png)
 ## 2.1 Donner la définition d’un neurone au sens informatique
 Un neuronne est une unité dans un réseau de neuronne. Chaque neuronne est conçu pour simuler le comportement des neuronnes biologiques du cerveau humain. Il s'appuie en général sur des données d'entrée, leur appliquent un traitement pour générer une sortie. Chaque neuronne peut etre connecter a une autre neuronne ou une source extérieur pour former un réseau de neuronne.
 - Entrée
@@ -112,7 +112,7 @@ Un neuronne est une unité dans un réseau de neuronne. Chaque neuronne est con�
 - Sortie
 - - Résultat de la fonction d'activation a la somme pondéré. 
 - - Transmise a d'autre neuronne ou couche suivante du réseau ou source extérieur.
-![alt text](./screen3.png)
+![alt text](.img/screen3.png)
 
 ## 2.2 En quoi consiste la notion de couche dans les réseaux de neurones 
 - Un réseau de neuronne est consititué de plusieur couche.
@@ -138,7 +138,7 @@ Il existe 3 type de couche
 - - Les neuronne recoivent d'un neuronne chaché et envoient la source externe 
 - - Nombre de neuronne depend du cadre d'utilsation du réseau
 
-![alt text](./screen4.png)
+![alt text](.img/screen4.png)
 
 ## 2.3 En quoi consiste une couche dans un réseau neurone
 Réponse au dessus 
@@ -192,32 +192,181 @@ Dans notre cas, les hyper paramètre semblent complexe a changer, on pourrait de
 La couche d'entrée et de sortie etant contraintes par le cadre et le contexte on peut essayer de changer la couche du milieu en changeant la fonction d'activation ou le nombre de noeud, ou bien en rajoutant des couches de ce type.
 
 ## 2.8 Relancer l’apprentissage en changeant ses paramètres, mettre en place un tableau montrant l’influence de ses paramètres.
-Test avec les params suivants
-```
-model = tf.keras.Sequential([
-    tf.keras.layers.Flatten(input_shape=(28, 28)),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(10)
-])
-```
-``
-``
-```
-model = tf.keras.Sequential([
-    tf.keras.layers.Flatten(input_shape=(28, 28)),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(10)
-])
-```
-``
-``
+On fait varier le nombre de noeud au sein d'une couche ou le nombre de couche ou les deux. On part du principe que de base on a 1 couche de 128 noeud  
+Voici toute les configuration testées avec leur résultat et influence
+|couche|noeud par couche|loss|accuracy|influence par rapport a x1|influence par rapport a x2| 
+|---------------|----------------|----|--------|---------|---|
+|x1|x1|0.3363|0.8824999928474426| - | - |
+|x2|x1|0.3316|0.8871999979019165|loss -- & accuracy ++| - |
+|x1|x2|0.3391|0.8845999836921692|loss + & accuracy +| - |
+|x2|x2|0.3339|0.8852999806404114|loss - & accuracy + | - |
+|x1|x6|0.3366|0.8862000107765198| loss = & accuracy + |loss - & accuracy +|
+|x6|x1|0.3489|0.8766000270843506| loss + & accuracy - |loss + & accuracy --|
 
+Conclusion : il semble mieux de rajouter juste un peu de couche mais pas trop non plus sans ajouter de noeud dedans. Mais globalement l'influence est vrmt pas énorme
+<details>
+    <summary>Détail des test</summary>
 
+    ```
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(10)
+    ])
+    ```
+    `313/313 - 1s - loss: 0.3363 - accuracy: 0.8825 - 555ms/epoch - 2ms/step`  
+    `Test accuracy: 0.8824999928474426`  
+      
+
+    ```
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(10)
+    ])
+    ```
+    `313/313 - 1s - loss: 0.3316 - accuracy: 0.8872 - 635ms/epoch - 2ms/step`  
+    `Test accuracy: 0.8871999979019165`  
+      
+
+    ```
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(256, activation='relu'),
+        tf.keras.layers.Dense(10)
+    ])
+    ```
+    `313/313 - 1s - loss: 0.3391 - accuracy: 0.8846 - 667ms/epoch - 2ms/step`  
+    `Test accuracy: 0.8845999836921692`  
+      
+
+    ```
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(256, activation='relu'),
+        tf.keras.layers.Dense(256, activation='relu'),
+        tf.keras.layers.Dense(10)
+    ])
+    ```
+    `313/313 - 1s - loss: 0.3339 - accuracy: 0.8853 - 1s/epoch - 3ms/step`  
+    `Test accuracy: 0.8852999806404114`  
+      
+
+    ```
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(10)
+    ])
+    ```
+    `313/313 - 1s - loss: 0.3489 - accuracy: 0.8766 - 771ms/epoch - 2ms/step`  
+    `Test accuracy: 0.8766000270843506`  
+      
+
+    ```
+    model = tf.keras.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(768, activation='relu'),
+        tf.keras.layers.Dense(10)
+    ])
+    ```
+    `313/313 - 2s - loss: 0.3366 - accuracy: 0.8862 - 2s/epoch - 5ms/step`  
+    `Test accuracy: 0.8862000107765198`  
+</details>
 
 ## 2.9 Quelle est la fonction d’activation associée au modèle, tester avec d’autres fonctions d’activation. Quelles sont les performances obtenues.
 C'est la focntion relu qui est définie dans la couche du milieu au moment de la construction des couches du modèle.
+Liste des potentielles activations :  
+![alt text](./img/screen5.png)  
+Tests : 
 
+|fonction d'activation|loss|accuracy|
+|---------------------|----|--------|
+|relu|0.3363|0.8824999928474426|
+|elu|0.3405|0.8805000185966492|
+|linear|0.4471|0.8445000052452087|
+|mish|0.3378|0.886900007724762|
+|exponential|0.4219|0.8657000064849854|
+|softmax|0.4916|0.8321999907493591|
+
+# 3 On veut tester 10 images que vous créerez vous même ne partant d’image couleur trouvés sur internet et en les convertissant pour les mettre au format reconnu par « ..._model.predict ».
+
+## 3.1 Quelle est ce format ? On passera par un fichier bmp en 28x28 puis on rajoutera au dossier sous google collab et on convertira directement pour l’usage dans predict  (quel est le code associé sous  google collab)
+On se base sur la variable test_image du notebook.  
+Cette varialbe est tableau d'image, chaque image est une cellule de ce tableau  
+Chaque image est elle même un tableau ou chacune de ces cellule est une ligne de pixel de l'image  
+Chaque cellule de cette ligne de pixel est un pixel de la ligne dans l'ordre qui est une valeurs numérique en 0 et 1 qui représente le niveau de gris du pixel  
+
+La variable test_images est créée par ces lignes dans le google collab 
+```
+fashion_mnist = tf.keras.datasets.fashion_mnist
+
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+```
+Voici un exemple de sa shape `(10000, 28, 28)`
+
+## Code pour transformer mes vraies images 
+
+```python
+from PIL import Image
+import numpy as np
+import os
+
+# Spécifiez le répertoire où se trouvent vos images
+image_directory = "./my_images"
+
+# Liste de noms de fichiers de vos images
+image_files = os.listdir(image_directory)
+
+# Créez une liste pour stocker les tableaux de pixels de chaque image
+images_data = []
+
+# Parcourez chaque image
+for image_file in image_files:
+    if image_file.endswith(".jpg"):  # Assurez-vous que seuls les fichiers d'image sont traités
+        img = Image.open(os.path.join(image_directory, image_file))
+        img = img.convert("L")  # Convertir en nuances de gris
+        img = img.resize((28, 28))  # Redimensionner en 28x28 pixels
+        img_data = np.array(img) / 255.0   # Convertir l'image en un tableau NumPy
+        images_data.append(img_data)
+
+# Convertir la liste d'images en un tableau 3D
+images_data = np.array(images_data)
+
+# Chaque image est maintenant accessible à partir de images_data[index]
+# Par exemple, la première image serait images_data[0]
+
+print("Images converties en nuances de gris, redimensionnées et stockées dans un tableau.")
+print("Shape du tableau 3D : ", images_data.shape)
+print(images_data)
+```
+
+## Construction prediction avec mes images
+`predictions = probability_model.predict(images_data)` 
+
+## Affichage de nos resultats
+```python
+# Plot the first X test images, their predicted labels, and the true labels.
+# Color correct predictions in blue and incorrect predictions in red.
+num_rows = 5
+num_cols = 2
+num_images = num_rows*num_cols
+plt.figure(figsize=(2*2*num_cols, 2*num_rows))
+for i in range(num_images):
+  plt.subplot(num_rows, 2*num_cols, 2*i+1)
+  plot_image(i, predictions[i], test_labels, images_data)
+  plt.subplot(num_rows, 2*num_cols, 2*i+2)
+  plot_value_array(i, predictions[i], test_labels)
+plt.tight_layout()
+plt.show()
+```
+![alt text](./img/screen6.png)
 
 # Sources
 - ChatGPT  
@@ -231,11 +380,3 @@ C'est la focntion relu qui est définie dans la couche du milieu au moment de la
 - https://www.tensorflow.org/api_docs/python/tf/keras/optimizers 
 - https://www.tensorflow.org/api_docs/python/tf/keras/losses
 - https://www.tensorflow.org/api_docs/python/tf/keras/metrics
--  
--  
--  
--  
--  
--  
--  
--  
