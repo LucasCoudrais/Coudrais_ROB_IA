@@ -41,10 +41,12 @@ On s’intéresse à l’exemple suivant
 https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/hub/tutorials/tf2_object_detection.ipynb
 
 ## 2.a Quelles sont les classes reconnues par le réseau ?
+Pour le réseau `CenterNet HourGlass104 Keypoints 512x512`, nous observons les classes suivantes dans notre résultat :
 - person
 - - On voit meme un squelette de la personne si assez de détail
 - kite
 - surfboard
+Par ailleurs on peut voir sur la dac de ce modèle qu'il reconnaitra toute les classe du dataset COCO 2017
 
 ## 2.b Quelle partie du code correspond au chargement du modèle de réseau.Quelles sont les modèles proposés
 Sélection du modèle :  
@@ -67,6 +69,7 @@ print('model loaded!')
 On retrouve les modèles proposée dans le code de sélection du modèle. Ils sont dans le tableau de paramètre de la variable `model_display_name`  
 
 ## 2.c Quelles sont les structures des modèles de réseaux sous jacents ?
+Voici la structure de l'ensemble des modèles de la liste du dessus : 
 - CenterNet
 - - HourGlass104 
 - - - Keypoints
@@ -95,7 +98,8 @@ On retrouve les modèles proposée dans le code de sélection du modèle. Ils so
 - - - - 640x640 ou 1024x1024 ou 800x1333
 - - Inception ResNet
 - - - V2 640x640 ou 1024x1024
-- Mask R-CNN Inception ResNet V2 1024x1024
+- Mask R-CNN 
+- - Inception ResNet V2 1024x1024
 
 ## 2 .d Tester sur une douzaine d’images de votre choix (Essayer sur des images contenant le plus de classes possibles reconnus) et faites un tableau comparatif
 
@@ -117,16 +121,44 @@ On retrouve les modèles proposée dans le code de sélection du modèle. Ils so
 
 # 3
 ## 3.a A quoi sert Tensorflow Hub, et y a t il des solutions équivalentes ?
+TensorFlow Hub est un depôt de modèles de machine learning entrainés que l'on peut optimiser et déployer rapidement et n'importe ou. Cet outil met a disposition un large choix de modèle entre autre adapté pour de la detection d'objet, exploitable avec TensorFlow.
+
+Voici une liste de solution semblables à TensoFlow
+- PyTorch Hub
+- Model Zoo de Apache MXNet
+- OpenAI GPT Models (outils GPT/BERT)
+- Hugging Face Transformers (outils GPT/BERT)
+- Scikit-learn
+- Keras
 
 ## 3.b Combien trouve t’on sur tensorflow hub de réseaux de detection d’objets ?
+On se base sur cette doc qui semble reprendre la liste que l'on avait dans le collab. Elle rescence tout les model de detection d'objet TF2 entrainée sur le dataset COCO 2017.
+https://tfhub.dev/tensorflow/collections/object_detection/1  
+Il semble y avoir 39 réseaux de detection d'objet.
 
 ## 3.c Quelles sont les architectures de ces réseaux ?
+Architecture des reseaux du collab deja décrites au dessus. La liste des reseaux du collab est la même que celle de la question précédente.
+En se basant sur la doc on peut voir les suivants : 
+- CenterNet 
+- Faster R-CNN
+- EfficientDet
+- SSD Mobilenet V2
+- RetinaNet
+- Mask R-CNN
+- SSD Mobilenet V1
 
 ## 3.d Quelles sont les classes reconnues ?
+Dans la doc, nous pouvons voir que tout les modeles sont entrainé sur le dataset `COCO 2017`. Ainsi tout nos modèle reconnaitront les classes de ce dataset. 
+- https://cocodataset.org/#detection-2017
+- https://cocodataset.org/#keypoints-2017
+- https://cocodataset.org/#stuff-2017
+On comprend par exemple que ce dataset propose 3 taches, la detection, le keypoint (on comprend qu'il s'agit du squelette des personnes) et le stuff.
+https://tech.amikelive.com/node-718/what-object-categories-labels-are-in-coco-dataset/  
+Il semble possible de récupérr l'ensemble des liste avec un code python.  
+Voici la liste des classes du dataset COCO 2017
+https://github.com/amikelive/coco-labels/blob/master/coco-labels-2014_2017.txt
 
 ## 3.e Y a-t-il des exemples pour gérer une phase d’apprentissage ?
-
-
 
 
 
@@ -136,3 +168,5 @@ On retrouve les modèles proposée dans le code de sélection du modèle. Ils so
 - https://larevueia.fr/quest-ce-que-la-segmentation-dimages/
 - https://www.augmentedstartups.com/blog/mastering-image-classification-techniques-enhancing-accuracy-and-efficiency
 - https://viso.ai/deep-learning/object-detection/
+- https://www.tensorflow.org/hub/tutorials/tf2_object_detection?hl=fr#more_models
+- https://tech.amikelive.com/node-718/what-object-categories-labels-are-in-coco-dataset/
