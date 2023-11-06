@@ -47,6 +47,7 @@ Pour le réseau `CenterNet HourGlass104 Keypoints 512x512`, nous observons les c
 - kite
 - surfboard
 Par ailleurs on peut voir sur la dac de ce modèle qu'il reconnaitra toute les classe du dataset COCO 2017
+La liste des classes de ce dataset se trouve dans le fichier `coco-2017-labels.txt`
 
 ## 2.b Quelle partie du code correspond au chargement du modèle de réseau.Quelles sont les modèles proposés
 Sélection du modèle :  
@@ -119,6 +120,22 @@ Voici la structure de l'ensemble des modèles de la liste du dessus :
     <img src="./img/img12_result.png" alt="Résultat de l'image 12">
 </details>
 
+| Image| Type| Nombre reconnaissance| Reconnaissance fausse| Reconnaissance "vide"|
+|------|------------|-------|------------|--|
+| 1| Vie a la campagne| 25| 5| 4| 
+| 2| Ville| 26| 3| 0| 
+| 3| Moment convivial| 21| 1| 2| 
+| 4| Liste animal| 6| 3| 0| 
+| 5| Plateau aliment| 8| 2| 0| 
+| 6| Liste transport| 17| 0| 0| 
+| 7| Nature morte| 10| 4| 0| 
+| 8| Page e-commerce vetement| 8| 0| 0| 
+| 9| Equipement de sport| 1| 0| 0| 
+| 10| Industrie robot| 4| 4| 0| 
+| 11| Robot| 4| 2| 0| 
+| 10| Intérieur maison| 12| 0| 1| 
+
+
 # 3
 ## 3.a A quoi sert Tensorflow Hub, et y a t il des solutions équivalentes ?
 TensorFlow Hub est un depôt de modèles de machine learning entrainés que l'on peut optimiser et déployer rapidement et n'importe ou. Cet outil met a disposition un large choix de modèle entre autre adapté pour de la detection d'objet, exploitable avec TensorFlow.
@@ -137,7 +154,7 @@ https://tfhub.dev/tensorflow/collections/object_detection/1
 Il semble y avoir 39 réseaux de detection d'objet.
 
 ## 3.c Quelles sont les architectures de ces réseaux ?
-Architecture des reseaux du collab deja décrites au dessus. La liste des reseaux du collab est la même que celle de la question précédente.
+Architecture des reseaux du collab deja décrites au dessus. La liste des reseaux du collab est la même que celle de la question précédente (2c).
 En se basant sur la doc on peut voir les suivants : 
 - CenterNet 
 - Faster R-CNN
@@ -160,7 +177,19 @@ https://github.com/amikelive/coco-labels/blob/master/coco-labels-2014_2017.txt
 
 ## 3.e Y a-t-il des exemples pour gérer une phase d’apprentissage ?
 
+- Collecte de données : La première étape consiste à collecter des données de haute qualité pour votre tâche d'apprentissage. Plus les données sont pertinentes et diversifiées, meilleures seront les performances de votre modèle.
 
+- Prétraitement des données : Avant de passer les données à un modèle d'apprentissage, vous devrez souvent les prétraiter. Cela peut inclure la normalisation, la réduction de dimensionnalité, la gestion des valeurs manquantes et d'autres transformations de données.
+
+- Choix du modèle : Sélectionnez un modèle approprié pour votre tâche. Il peut s'agir de réseaux de neurones convolutifs (CNN) pour la vision par ordinateur, de réseaux de neurones récurrents (RNN) pour le traitement du langage naturel, ou d'autres architectures en fonction de votre problème.
+
+- Définition de l'architecture du modèle : Concevez l'architecture de votre modèle en spécifiant le nombre de couches, les fonctions d'activation, les hyperparamètres, etc.
+
+- Division des données : Séparez vos données en ensembles d'entraînement, de validation et de test. L'ensemble de validation est utilisé pour régler les hyperparamètres, tandis que l'ensemble de test est utilisé pour évaluer les performances du modèle.
+
+- Entraînement du modèle : Utilisez l'ensemble d'entraînement pour ajuster les poids et les biais du modèle en utilisant un algorithme d'optimisation, tel que la descente de gradient. Surveillez les métriques de performance pendant l'entraînement.
+
+- Validation et ajustement des hyperparamètres : Utilisez l'ensemble de validation pour ajuster les hyperparamètres du modèle, tels que le taux d'apprentissage, le nombre de couches, la taille du lot (batch size), etc.
 
 # Sources 
 - ChatGPT
