@@ -6,7 +6,8 @@ import numpy as np
 from ultralytics.utils import ASSETS, yaml_load
 from ultralytics.utils.checks import check_yaml
 
-CLASSES = yaml_load(check_yaml('coco128.yaml'))['names']
+CLASSES = yaml_load(check_yaml('dataset.yaml'))['names']
+# CLASSES = yaml_load(check_yaml('coco128.yaml'))['names']
 colors = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 
@@ -23,6 +24,7 @@ def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
         x_plus_w (int): X-coordinate of the bottom-right corner of the bounding box.
         y_plus_h (int): Y-coordinate of the bottom-right corner of the bounding box.
     """
+
     label = f'{CLASSES[class_id]} ({confidence:.2f})'
     color = colors[class_id]
     cv2.rectangle(img, (x, y), (x_plus_w, y_plus_h), color, 2)
@@ -100,7 +102,7 @@ def main(onnx_model, input_image):
         detections.append(detection)
         draw_bounding_box(original_image, class_ids[index], scores[index], round(box[0] * scale), round(box[1] * scale),
                           round((box[0] + box[2]) * scale), round((box[1] + box[3]) * scale))
-
+        print(class_ids[index])
     # Display the image with bounding boxes
     cv2.imshow('image', original_image)
     cv2.waitKey(0)
@@ -111,7 +113,8 @@ def main(onnx_model, input_image):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', default='yolov5nu.onnx', help='Input your ONNX model.')
-    parser.add_argument('--img', default=str('test_opencv_dnn_light/dog.jpg'), help='Path to input image.')
+    # parser.add_argument('--model', default='yolov5nu.onnx', help='Input your ONNX model.')
+    parser.add_argument('--model', default='model_elephant_giraffe.onnx', help='Input your ONNX model.')
+    parser.add_argument('--img', default=str('my_images_custom/gir.jpg'), help='Path to input image.')
     args = parser.parse_args()
     main(args.model, args.img)

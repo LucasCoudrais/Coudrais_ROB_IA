@@ -178,3 +178,75 @@ En branchant une webcam, le code va lire le flux et lui appliquer une detection 
 Ainsi en branche une webcam et en executant le code on voit une fenetre avec le retour de la webcam avec une detection d'objet dessus.
 
 # Partie 2 Interfaçage Python
+
+## Question 2.1 On désire une option pour n'afficher qu'une liste de classe configurée en ligne de commande et mettre en place des  boîtes englobantes avec un effet de transparence ou équivalent pour mettre les objets detectés en surbrillance ou équivalents. Adapter  le code pour travailler sur un  flux webcam ou des images ( En changeant la ligne de commande) .
+
+# Partie 3 Préparation à l’entraînement votre propre classifier
+
+L'idée est maintenant de comprendre comment créer votre propre réseau . L’objectif est de créer votre classifier sur 3 ou 4 classes (à vous de choisir parmi les objets proposés ou autres). Il faut prévoir idéalement dans les 200 images labélisés par classe (ne pas hésiter à mixer les fonds et les éclairages) mais on peut avoir des performances corrects à partir de 40.
+
+## Créer le dataset et le labéliser sur roboflow
+![alt text](./img/screen1.png)
+
+
+## Vous exporterez à la fin le dataset au format yolo et au format tensorflow. Que contienne ses archives ? (vous renderez ces fichiers sur le e-campus)
+YOLO v3
+```
+!pip install roboflow
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="RXLg6HXDr2aPKiDVgGsJ")
+project = rf.workspace("robia").project("tp3_ia_girafe_elephant")
+dataset = project.version(1).download("yolokeras")
+
+https://app.roboflow.com/ds/L7DPJteV1u?key=CppOvNlDJ8
+```
+
+TF 
+```
+!pip install roboflow
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="RXLg6HXDr2aPKiDVgGsJ")
+project = rf.workspace("robia").project("tp3_ia_girafe_elephant")
+dataset = project.version(1).download("tensorflow")
+
+https://app.roboflow.com/ds/ghe92TRQH2?key=SjSmVEQs2x
+```
+
+Ses archices contiennent 3 dossier principaux : 
+- dossier test (images utilisé pour les test)
+- dossier train (images utilisé pour l'entrainement)
+- dossier valid (images utilisées pour la validation)
+- Chaque dossier contient les images correspondantes avec un fichier d'annotation (contient les infos sur les box d'annotation) et un fichier classe (contient les classes annotées)
+- Les images sont réparties avec un ratio 70%(train)-20%(valid)-10%(test)
+- Fichiers README
+## Vous pourrez ensuite lancer l’apprentissage sur roboflow (vous avez 3 credits associés à la création de votre compte). Tester le résultat ? Etes vous satisfait du résultat , expliquer pourquoi et comment vous tester.
+
+
+## Comment peut-on récupérer le réseau généré ?  Comment l’utiliser ? Pourquoi ce choix ?
+
+## On procédera ensuite à l’export du dataset sous ultralytics puis au training en utilisant le format YOLOv5lu.
+![alt text](./img/screen2.png)  
+Puis suivre ce qui suit  
+Puis on obtient cette courbe représentative du déroulement de l'entrainement  
+![alt text](./img/screen3.png)  
+
+## On testera le résultat sur le site , est ce meilleur ou moins bon que le résultat de roboflow ?
+![alt text](./img/screen4.png)  
+![alt text](./img/screen5.png)  
+![alt text](./img/screen6.png)  
+
+## Dans les options de déploiement de ultralytics, on pourra ensuite générer et télécharger le format onnx .
+Voir fichier généré 
+
+## Vous pourrez finalement le tester sous opencv directement. en utilisant le code d’exemple fourni sur le e-campus. Vous devrez en particulier trouver une solution pour récupérer le nom de vos classes, expliquer comment ?
+
+Pour que ca fonctionne bien, il a fallu, changer les noms des classes pour que ce corresponde au predictions voulues et au model.  
+Ainsi il a fallu récupérer le fichier yaml généré lors du train du model ultralytics ou on aurait pu aussi changer les noms de classe en dur.
+
+## Cela est il fonctionnelles, comment procéder à tests ? Etes-vous satisfaits ? 
+On obtient le résultat suivant 
+![alt text](./img/screen7.png)  
+Il suffit d'exécuter le fichier python en ayant changer le noms des classes ainsi que le moteur onnx.  
+On voit que ca marche pas super bien mais au moins ca reconnait un peu. Certes, ca reconnait moins que sur ultralytics, surement du a l'outil qui est plus adapté a son propre export que opencv  
