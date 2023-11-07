@@ -127,8 +127,54 @@ On retrouve les classes dans le fichier `coco.names`
 
 ## Question 1.2 A quoi sert le ou les thresholds ?
 
+Dans notre cas le thresholds sert a définir un seuil. On en définit deux différent :
+- Le seuil de confiance : 
+- - Valeur de probabilité minimale requise pour afficher la prédiction a l'écran. 
+- - Permet d'éviter de polluer avec des prédictions peu fiable
+- - Dans notre codé égale a 20%
+- Le seuil de suppression non maximal
+- - Valeur que l'on applique a l'aglo de supression non maximale entre des predictions sur une même entité
+- - Permet de filtrer les prédictions redondante sur un même sujet afin d'en garder la plus fiable
+- - Dans notre code définie a 40%
+
 ## Question 1.3 Quelles sont les fichiers utilisés liés au réseau de neurones  , que contiennent ils précisément ?
+
+Pour les réseaux `yolov3` et `yolov3-tiny`, on peut distinguer deux types de fichiers pour chacun : 
+- weights
+- - Contient les poids appris par le modèle yolov3 lors de son entraînement sur un ensemble de données volumineux.
+- - On utilise ces poids lors de l'initialisation de l'inférence, ce qui permet de faire des prédictions sur les images
+- - Fichier potentiellement assez volumineux pouvant contenir des millions de poids.
+- config
+- - Contient l'architecture sur réseau
+- - On y retrouve 
+- - - Des informations directs sur le réseau
+- - - Les spécifications des couches du réseaux
 
 ## Question 1.4 Quelle est l’architecture du réseau yolov3 et yolov3 tiny  , expliquer les différentes couches du réseaux .  Lesquelles dépendent du nombre de classes ?
 
+YOLOV3 Architecture : 
+- Dimension : 608x608 et 3 canaux (RGB)
+- Convolution et extraction des caractéristiques
+- - Couches de convolution
+- - - fonction d'activation `leaky`
+- - Suivi de couches `shortcut`
+- - - fonction d'activation `linear`
+- 80 classes 
+- 3 couches `yolo` avec des masques et ancres propre
+
+YOLOV3-TINY 
+- Dimension : 416x416 et 3 canaux (RGB)
+- Convolution et extraction des caractéristiques
+- - Couches de convolution
+- - - fonction d'activation `leaky`
+- - Suivi de couches `maxpool`
+- - - taille 2
+- 80 classes 
+- 2 couches `yolo` avec des masques et ancres propre
+
 ## Question 1.5 Est-ce que vous trouvez d’autres modèles pré entrainés proposés aux téléchargement ? Si oui tester les 
+Il semble y en avoir un adapté à l'utilisation d'une webcam  
+En branchant une webcam, le code va lire le flux et lui appliquer une detection d'objet en temps réél.  
+Ainsi en branche une webcam et en executant le code on voit une fenetre avec le retour de la webcam avec une detection d'objet dessus.
+
+# Partie 2 Interfaçage Python
