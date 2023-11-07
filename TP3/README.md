@@ -180,6 +180,9 @@ Ainsi en branche une webcam et en executant le code on voit une fenetre avec le 
 # Partie 2 Interfaçage Python
 
 ## Question 2.1 On désire une option pour n'afficher qu'une liste de classe configurée en ligne de commande et mettre en place des  boîtes englobantes avec un effet de transparence ou équivalent pour mettre les objets detectés en surbrillance ou équivalents. Adapter  le code pour travailler sur un  flux webcam ou des images ( En changeant la ligne de commande) .
+Voir le fichier `example_official_open_cv_ultalytics_custom`
+On lance le fichier en selectionnant les classes en argument : `python3 example_official_open_cv_ultalytics_custom.py --model yolov5nu.onnx --img my_images/img1.jpg --classes person bird`
+![alt text](./img/screen8.png)
 
 # Partie 3 Préparation à l’entraînement votre propre classifier
 
@@ -222,9 +225,10 @@ Ses archices contiennent 3 dossier principaux :
 - Les images sont réparties avec un ratio 70%(train)-20%(valid)-10%(test)
 - Fichiers README
 ## Vous pourrez ensuite lancer l’apprentissage sur roboflow (vous avez 3 credits associés à la création de votre compte). Tester le résultat ? Etes vous satisfait du résultat , expliquer pourquoi et comment vous tester.
-
+C'est fait je l'ai bien lancé mais impossible de finir l'entrainement de modèe (même après 3h)
 
 ## Comment peut-on récupérer le réseau généré ?  Comment l’utiliser ? Pourquoi ce choix ?
+On aurait pu exécuter directement notre modèle hébergé chez roboflow et l'utiliser sur des images qu'on aurait pu uploader sur le site et le tester donc directment sur le site. Attention roboflow une fois que roboflow a entrainé notre modèle, il est hebergé chez eux. On doit par la suite si on veut bcp l'utiliser payer pour "louer" notre modèle et pouvoir l'utilsier 
 
 ## On procédera ensuite à l’export du dataset sous ultralytics puis au training en utilisant le format YOLOv5lu.
 ![alt text](./img/screen2.png)  
@@ -242,7 +246,7 @@ Voir fichier généré
 
 ## Vous pourrez finalement le tester sous opencv directement. en utilisant le code d’exemple fourni sur le e-campus. Vous devrez en particulier trouver une solution pour récupérer le nom de vos classes, expliquer comment ?
 
-Pour que ca fonctionne bien, il a fallu, changer les noms des classes pour que ce corresponde au predictions voulues et au model.  
+Pour que ca fonctionne bien, il a fallu, changer les noms des classes pour que celle ci corresponde au predictions voulues et au model.  
 Ainsi il a fallu récupérer le fichier yaml généré lors du train du model ultralytics ou on aurait pu aussi changer les noms de classe en dur.
 
 ## Cela est il fonctionnelles, comment procéder à tests ? Etes-vous satisfaits ? 
