@@ -7,7 +7,7 @@ Le modèle suivant prend en des images d'input de taille 32x32, hors lors de not
 
 # Code
 ### Imports 
-```
+``` python
 import tensorflow as tf
 
 from tensorflow.keras import datasets, layers, models
@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 ```
 
 ### Chargement et normalisation des données
-```
+```python
 (train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
 
 # Normalize pixel values to be between 0 and 1
@@ -23,19 +23,19 @@ train_images, test_images = train_images / 255.0, test_images / 255.0
 ```
 
 ### Déclaration des noms de classes
-```
+```python
 class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 ```
 
 ### Pré affichage des données 
-```
+```python
 plt.figure()
 plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
 plt.show()
 ```
-```
+```python
 plt.figure(figsize=(10,10))
 for i in range(25):
     plt.subplot(5,5,i+1)
@@ -50,7 +50,7 @@ plt.show()
 
 
 ### Configuration du modèle CNN et des couches
-```
+```python
 model = models.Sequential()
 model.add(layers.Conv2D(32, (5, 5), activation='relu', input_shape=(32, 32, 3)))
 model.add(layers.MaxPooling2D((2, 2)))
@@ -62,20 +62,20 @@ model.add(layers.Dense(10))
 ```
 
 ### Compilation du modèle
-```
+```python
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 ```
 
 ### Nourrir le modèle 
-```
+```python
 history = model.fit(train_images, train_labels, epochs=10, 
                     validation_data=(test_images, test_labels))
 ```
 
 ### Evaluation graphique de l'accuracy
-```
+```python
 plt.plot(history.history['accuracy'], label='accuracy')
 plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
 plt.xlabel('Epoch')
@@ -88,19 +88,19 @@ test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 ![alt text](./img/screen3.png)
 
 ### Predicitions
-```
+```python
 probability_model = tf.keras.Sequential([model,
                                          tf.keras.layers.Softmax()])
 predictions = probability_model.predict(test_images)
 ```
 
 ### Import numpy 
-```
+```python
 import numpy as np
 ```
 
 ### Définittion fonctions de visualisation
-```
+```python
 def plot_image(i, predictions_array, true_label, img):
   true_label, img = true_label[i][0], img[i]
   plt.grid(False)
@@ -133,7 +133,7 @@ def plot_value_array(i, predictions_array, true_label):
   thisplot[true_label].set_color('blue')
 ```
 ### Vérification prédictions
-```
+```python
 i = 0
 plt.figure(figsize=(6,3))
 plt.subplot(1,2,1)
@@ -144,7 +144,7 @@ plt.show()
 ```
 ![alt text](./img/screen4.png)
 
-```
+```python
 i = 12
 plt.figure(figsize=(6,3))
 plt.subplot(1,2,1)
@@ -155,7 +155,7 @@ plt.show()
 ```
 ![alt text](./img/screen5.png)
 
-```
+```python
 # Plot the first X test images, their predicted labels, and the true labels.
 # Color correct predictions in blue and incorrect predictions in red.
 num_rows = 5
