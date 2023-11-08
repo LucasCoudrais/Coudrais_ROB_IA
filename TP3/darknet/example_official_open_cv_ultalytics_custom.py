@@ -30,16 +30,14 @@ def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
     cv2.rectangle(img, (x, y), (x_plus_w, y_plus_h), color, 2)
     cv2.putText(img, label, (x - 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-def highlight_detection_area(img, x, y, x_plus_w, y_plus_h, alpha):
-    # Crée un masque pour les zones en dehors de la boîte de détection
+def highlight_detection_area(img, x, y, x_plus_w, y_plus_h):
+    # Create a mask for the area to highlight
     mask = np.zeros_like(img)
     mask[y:y_plus_h, x:x_plus_w, :] = 255
-    # Applique un effet de fondu sur le masque
-    faded_mask = cv2.addWeighted(mask, alpha, mask, 0, 0)
-    # Inverse le masque pour éclairer l'intérieur de la boîte
-    inverted_mask = cv2.bitwise_not(faded_mask)
-    # Fusionne l'image d'origine et le masque inversé
-    highlighted_area = cv2.bitwise_and(img, inverted_mask)
+
+    # Add the image and the mask, with the mask weighted to control the amount of brightness added
+    highlighted_area = cv2.addWeighted(img, 0.9, mask, 0.3, 0)
+
     return highlighted_area
 
 def main(onnx_model, input_image, target_classes):
@@ -97,7 +95,7 @@ def main(onnx_model, input_image, target_classes):
                 scores.append(maxScore)
                 class_ids.append(maxClassIndex)
 
-    faded_image = darken_image(original_image, alpha=0.5)
+    faded_image = original_image
 
     # Apply NMS (Non-maximum suppression)
     result_boxes = cv2.dnn.NMSBoxes(boxes, scores, 0.25, 0.45, 0.5)
@@ -118,7 +116,7 @@ def main(onnx_model, input_image, target_classes):
                           round((box[0] + box[2]) * scale), round((box[1] + box[3]) * scale))
         # Applique l'effet d'éclairage à l'intérieur de la boîte de détection
         faded_image = highlight_detection_area(faded_image, round(box[0] * scale), round(box[1] * scale),
-                                              round((box[0] + box[2]) * scale), round((box[1] + box[3]) * scale), alpha=0.8)
+                                              round((box[0] + box[2]) * scale), round((box[1] + box[3]) * scale))
 
     # Display the image with bounding boxes
     cv2.imshow('image', faded_image)
