@@ -107,3 +107,8 @@ Alors que le CVAE, va directement essayer de sortir une image abstraite se basan
 ## 1.f essayer d’utiliser le dataset pokemon disponible sur kaggle pour generer des pokemons
 
 https://www.kaggle.com/code/lukemonington/pokemon-images-autoencoder-and-gan-in-tensorflow/notebook
+
+Résultats avec un VAE sans couches convolutionnelles
+![alt text](./img/screen15.png)  
+Résultats avec un VAE avec couches convolutionnelles
+![alt text](./img/screen16.png)  
